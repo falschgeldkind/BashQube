@@ -21,12 +21,3 @@ The current working directory MUST be the one the script is in!
 Make sure you are in the correct directory!
 
 sudo bash ./Main.sh
-
-
-path_auto=$path_script/automated
-#export path_auto=$path_script/dev/automated
-export path_manu=$path_script/manual
-#export path_manu=$path_script/dev/manual
-export path_config=$path_script/config
-export path_rsc=$path_script/rsc
-export path_software=/media/spock/SOFT
