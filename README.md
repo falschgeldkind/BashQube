@@ -1,4 +1,4 @@
-BashQube allows you to configure a Ubuntu (probably debian too) machine after initial installation via configuration scripts. It installs all it's required scripts itself. It is meant to speed up initial configuration as much as possible with as much flexibility as possible, just using bash scripts.
+BashQube allows you to configure a Ubuntu (probably debian too) machine after initial installation via configuration scripts. It installs all it's required packages itself. It is meant to speed up initial configuration as much as possible with as much flexibility as possible, just using bash scripts.
 
 BashQube offers automatic (back-to-back) or manual execution and logging for fully-automated configuration steps via scripts. It also offers a selection window for manual tasks after all basic configuration tasks are done. After that it continues with the automatic configuration.
 
