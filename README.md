@@ -16,6 +16,7 @@ can use in your scripts. They are set in utils.sh
 
 
 === Start BashQube ===
+
 IMPORTANT!
 The current working directory MUST be the one the script is in!
 Make sure you are in the correct directory!
