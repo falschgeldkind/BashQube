@@ -3,4 +3,5 @@
 #*Name: matlab
 
 echo "This is an example script for an automated basic configuration step!"
+echo "The selected version of Matlab is: $matlabVer"
 sleep 10
