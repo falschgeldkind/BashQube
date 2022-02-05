@@ -7,13 +7,18 @@ source $path_script/version_management.sh
 
 #initialize
 
-generate_software_version_catalogue
-if ! read_conf $path_script/config.conf; then
-	exit 1
-else
-	source $path_script/config.conf
-fi
+handle_cli_args $@
 
+generate_software_version_catalogue
+if [ ! -v $config_file ]; then
+	if ! read_conf $config_file; then
+		echo "You can see which sofware and which versions of it are supported by this suite by taking a look at:
+$(realpath $path_config/reference.conf)"
+		exit 1
+	else
+		source $config_file
+	fi
+fi
 
 #get scripts
 export autoscripts=()

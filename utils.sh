@@ -17,7 +17,7 @@ else
 fi
 
 ### Path to logfile
-export logfile=$path_script/setup$(date --iso-8601=seconds)date.log
+export logfile=$path_script/$(hostname)-setup$(date --iso-8601=seconds).log
 
 ### Path to Software sources
 export path_software=/your/software/directory/
@@ -66,4 +66,13 @@ call_and_log() {
   fi
   exec 1>&3 2>&4
   echo >&2 "Done"
+}
+
+handle_cli_args() {
+  while getopts c:g: flag; do
+    case "$flag" in
+      c) export config_file=${OPTARG};automated=true;;
+      g) generate_config ${OPTARG};;
+    esac
+  done
 }
