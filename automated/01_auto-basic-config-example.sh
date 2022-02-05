@@ -3,5 +3,5 @@
 #*Name: basic
 
 echo "This is an example script for an automated basic configuration step!"
-echo "The selected version of Matlab is: $basicVer"
+echo "The selected versions of XXXXX are: ${basicVer[@]}"
 sleep 10

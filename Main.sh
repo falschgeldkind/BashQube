@@ -3,8 +3,16 @@
 export path_script=$(pwd)
 source $path_script/utils.sh
 source $path_script/manual_installation.sh
+source $path_script/version_management.sh
 
 #initialize
+
+generate_software_version_catalogue
+if ! read_conf $path_script/config.conf; then
+	exit 1
+else
+	source $path_script/config.conf
+fi
 
 
 #get scripts
@@ -14,8 +22,7 @@ export automenupoints=()
 export manumenupoints=()
 
 for f in $path_auto/*.sh; do
-	echo $(get_versions $f)
-  autoscripts+="$(echo $f | rev | cut -d / -f 1 | rev | grep -oP '^\d{2}.*.sh') "
+	  autoscripts+="$(echo $f | rev | cut -d / -f 1 | rev | grep -oP '^\d{2}.*.sh') "
 done
 
 for s in $autoscripts; do

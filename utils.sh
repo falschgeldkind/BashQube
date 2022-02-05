@@ -60,14 +60,10 @@ display_result() {
 call_and_log() {
   exec 3>&1 4>&2 &> >(tee -a "$logfile") 2>&1
   echo "========== $1 =========" >>$logfile
-  $1
+  source $1
   if [[ $? != 0 ]]; then
     exit 1
   fi
   exec 1>&3 2>&4
   echo >&2 "Done"
-}
-
-get_versions() {
-  grep -Po '#*Versions: \K.*' "$1"
 }
