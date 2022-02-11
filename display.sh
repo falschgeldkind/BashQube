@@ -21,7 +21,6 @@ display_manual_step_selection() {
       ;;
     $DIALOG_ESC)
       #clear
-      echo "Program aborted." >&2
       break
       ;;
     esac
@@ -98,9 +97,7 @@ display_automation_question() {
 	0)
 	  #clear
     get_selections
-    if ! $dry; then
-      source $path_config/config.conf
-    fi
+    source $path_config/config.conf
     ;;
   $DIALOG_ESC)
     #clear

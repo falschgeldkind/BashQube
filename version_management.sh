@@ -71,11 +71,6 @@ read_conf() {
     fi
   done<$1
   return $success
-
-    #echo $(check_conf "$line")
-    #if [ $(check_conf $line -ne 0) ]; then
-    #  echo "error"
-    #fi
 }
 
 get_selections() {
