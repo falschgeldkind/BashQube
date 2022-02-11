@@ -79,6 +79,7 @@ read_conf() {
 }
 
 get_selections() {
+  rm $path_config/config.conf
   while IFS="\n" read line; do
     name=$(echo "$line"|grep -Po '.*(?=Ver=)')
     echo $name
