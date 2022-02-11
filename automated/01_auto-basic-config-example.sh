@@ -3,7 +3,7 @@
 #*Name: basic
 
 echo "This is an example script for an automated basic configuration step!"
-echo "The selected versions of XXXXX are: ${basicVer[@]}"
+echo "The selected versions of Basic Config are: ${basicVer[@]}"
 
 
-sleep 10
+sleep 5

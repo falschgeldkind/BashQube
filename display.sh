@@ -98,7 +98,7 @@ display_automation_question() {
 	0)
 	  #clear
     get_selections
-    sleep 15
+    source $path_config/config.conf
     ;;
   $DIALOG_ESC)
     #clear

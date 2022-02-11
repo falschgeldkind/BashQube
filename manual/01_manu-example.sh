@@ -3,4 +3,4 @@
 #*Name: manu1
 
 echo "This is an example script for a manual configuration step!"
-sleep 10
+sleep 5
