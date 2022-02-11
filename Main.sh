@@ -6,7 +6,7 @@ source $path_script/utils.sh
 source $path_script/version_management.sh
 source $path_script/display.sh
 
-#initialize
+initialize
 
 handle_cli_args $@
 
