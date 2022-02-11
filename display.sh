@@ -59,7 +59,7 @@ display_all_step_selection() {
       break
       ;;
     esac
-    #compose menu entries
+    #Execute selected script
     for autoscript in $autoscripts; do
       if [[ $autoscript == $selection* ]]; then
         call_and_log $path_auto/$autoscript
@@ -130,4 +130,5 @@ print_help() {
   echo "-g target_file"
   echo "      Generate a config by multiple choice selections and write it to the given file"
   echo "-h    Print this help"
+  echo "-l    Define logfile"
 }

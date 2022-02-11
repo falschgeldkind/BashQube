@@ -61,6 +61,10 @@ check_conf() {
 
 ### reads config file and checks wether it is valid if so it returns 0
 read_conf() {
+  if [ ! -f $1 ]; then
+    echo "Config file $1 does not exist!"
+    exit 1
+  fi
   success=0
   #echo $lines
   #cat $1

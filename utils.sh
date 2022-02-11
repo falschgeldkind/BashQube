@@ -71,10 +71,11 @@ call_and_log() {
 }
 
 handle_cli_args() {
-  while getopts c:g:h flag; do
+  while getopts c:g:l:h flag; do
     case "$flag" in
       c)  export config_file=${OPTARG};automated=true;;
       g)  export config_file=${OPTARG};dry=true;;
+      l)  logfile=${OPTARG};;
       h)  print_help;exit 0;;
     esac
   done
