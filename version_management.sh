@@ -11,10 +11,26 @@ generate_software_version_catalogue() {
   rm $path_config/reference.conf
   for f in $path_auto/*.sh; do
   	get_versions $f
+    autoscripts+="$(echo $f | rev | cut -d / -f 1 | rev | grep -oP '^\d{2}.*.sh') "
   done
 
   for f in $path_manu/*.sh; do
   	get_versions $f
+    manualscripts+="$(echo $f | rev | cut -d / -f 1 | rev | grep -oP '^\d{2}.*.sh') "
+  done
+
+  for s in $autoscripts; do
+    number="$(echo $s | grep -oP '(\d{2})(?=(_))') "
+    name="$(echo $s | grep -o -P '(?<=(\d\d_)).*(?=.sh)') "
+    automenupoints+=$number
+    automenupoints+=$name
+  done
+
+  for s in $manualscripts; do
+    number="1$(echo $s | grep -oP '(\d{2})(?=(_))') "
+    name="$(echo $s | grep -o -P '(?<=(\d\d_)).*(?=.sh)') "
+    manumenupoints+=$number
+    manumenupoints+=$name
   done
 }
 
@@ -60,4 +76,14 @@ read_conf() {
     #if [ $(check_conf $line -ne 0) ]; then
     #  echo "error"
     #fi
+}
+
+get_selections() {
+  while IFS="\n" read line; do
+    name=$(echo "$line"|grep -Po '.*(?=Ver=)')
+    echo $name
+    versions=$(echo "$line"|grep -Po '(?<==\().*(?=\))')
+    selected=`display_software_version_selection $name $versions`
+    printf "%sVer=(%s)\n" "$name" "$selected" >> $path_config/config.conf
+  done<$path_config/reference.conf
 }
