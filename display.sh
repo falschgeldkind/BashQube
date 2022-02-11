@@ -98,7 +98,9 @@ display_automation_question() {
 	0)
 	  #clear
     get_selections
-    source $path_config/config.conf
+    if ! $dry; then
+      source $path_config/config.conf
+    fi
     ;;
   $DIALOG_ESC)
     #clear
@@ -119,4 +121,16 @@ display_software_version_selection() {
   )
   dialog --checklist "Wählen sie die gewünschten Versionen von $name" 0 0 0\
   $versions 3>&1 1>&2 2>&3
+}
+
+print_help() {
+  echo "BashQube script suite"
+  echo
+  echo "Syntax: Main.sh [-c|g|h]"
+  echo "Options:"
+  echo "-c config_file"
+  echo "      Start automatic configuration based on the given config file"
+  echo "-g target_file"
+  echo "      Generate a config by multiple choice selections and write it to the given file"
+  echo "-h    Print this help"
 }

@@ -16,7 +16,14 @@ export manualscripts=()
 export automenupoints=()
 export manumenupoints=()
 
+
 generate_software_version_catalogue
+
+if $dry; then
+	get_selections
+	exit
+fi
+
 if [ ! -v $config_file ]; then
 	if ! read_conf $config_file; then
 		echo "You can see which sofware and which versions of it are supported by this suite by taking a look at:
@@ -27,12 +34,10 @@ $(realpath $path_config/reference.conf)"
 	fi
 fi
 
-
 #show the querry whether the installation should proceed automatically
-if ! $automated; then
+if ! $automated ; then
 	display_automation_question
 fi
-
 #run the scripts in numerical order
 ## After all scripts beginning with 0 are done, trigger the manual installation, then resume with the remaining automated ones
 manual_step_done=false

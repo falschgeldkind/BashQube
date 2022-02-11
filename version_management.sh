@@ -79,12 +79,18 @@ read_conf() {
 }
 
 get_selections() {
-  rm $path_config/config.conf
+  if ! $dry; then
+    rm $path_config/config.conf
+  fi
   while IFS="\n" read line; do
     name=$(echo "$line"|grep -Po '.*(?=Ver=)')
     echo $name
     versions=$(echo "$line"|grep -Po '(?<==\().*(?=\))')
     selected=`display_software_version_selection $name $versions`
-    printf "%sVer=(%s)\n" "$name" "$selected" >> $path_config/config.conf
+    if $dry; then
+      printf "%sVer=(%s)\n" "$name" "$selected" >> $config_file
+    else
+      printf "%sVer=(%s)\n" "$name" "$selected" >> $path_config/config.conf
+    fi
   done<$path_config/reference.conf
 }

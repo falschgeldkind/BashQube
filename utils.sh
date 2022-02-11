@@ -31,6 +31,8 @@ export WIDTH=0
 
 ###do not change if you dont know what it does!
 export automated=false
+export dry=false
+
 
 initialize() {
   check_if_root
@@ -69,10 +71,11 @@ call_and_log() {
 }
 
 handle_cli_args() {
-  while getopts c:g: flag; do
+  while getopts c:g:h flag; do
     case "$flag" in
-      c) export config_file=${OPTARG};automated=true;;
-      g) generate_config ${OPTARG};;
+      c)  export config_file=${OPTARG};automated=true;;
+      g)  export config_file=${OPTARG};dry=true;;
+      h)  print_help;exit 0;;
     esac
   done
 }
