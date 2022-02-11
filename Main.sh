@@ -2,88 +2,56 @@
 
 export path_script=$(pwd)
 source $path_script/utils.sh
+#source $path_script/manual_installation.sh
+source $path_script/version_management.sh
+source $path_script/display.sh
 
-check_if_root
+#initialize
 
-source $path_script/manual_installation.sh
-
-apt update
-apt upgrade -y
-
-
-#Install dialog
-apt install -y dialog zenity xclip
+handle_cli_args $@
 
 #get scripts
-export autoscripts=( )
-export manualscripts=( )
-export automenupoints=( )
-export manumenupoints=( )
+export autoscripts=()
+export manualscripts=()
+export automenupoints=()
+export manumenupoints=()
 
-for f in $path_auto/*.sh
-do
-	autoscripts+="$(echo $f | rev | cut -d / -f 1 | rev | grep -oP '^\d{2}.*.sh') "
-done
-for s in $autoscripts
-do
-    number="$(echo $s | grep -oP '(\d{2})(?=(_))') "
-    name="$(echo $s | grep -o -P '(?<=(\d\d_)).*(?=.sh)') "
-    automenupoints+=$number
-    automenupoints+=$name
-done
 
-for f in $path_manu/*.sh
-do
-	manualscripts+="$(echo $f | rev | cut -d / -f 1 | rev | grep -oP '^\d{2}.*.sh') "
-done
-for s in $manualscripts
-do
-    number="1$(echo $s | grep -oP '(\d{2})(?=(_))') "
-    name="$(echo $s | grep -o -P '(?<=(\d\d_)).*(?=.sh)') "
-    manumenupoints+=$number
-    manumenupoints+=$name
-done
+generate_software_version_catalogue
+
+if $dry; then
+	get_selections
+	exit
+fi
+
+if [ ! -v $config_file ]; then
+	if ! read_conf $config_file; then
+		echo "You can see which sofware and which versions of it are supported by this suite by taking a look at:
+$(realpath $path_config/reference.conf)"
+		exit 1
+	else
+		source $config_file
+	fi
+fi
 
 #show the querry whether the installation should proceed automatically
-exec 3>&1
-selection=$(dialog \
-    --backtitle "$(lsb_release -sd)" \
-    --clear \
-    --title "Einrichtungsskript" \
-    --yesno "Möchten Sie die Grundeinrichtung automatisiert durchführen?
-    Bitte auswählen:" $HEIGHT $WIDTH \
-    2>&1 1>&3)
-exit_status=$?
-exec 3>&-
-case $exit_status in
-    $DIALOG_CANCEL)
-        #clear
-        #run the scripts manually
-        manual_configuration
-    exit;;
-    $DIALOG_ESC)
-        #clear
-        echo "Program aborted." >&2
-    exit 1;;
-esac
-
+if ! $automated ; then
+	display_automation_question
+fi
 #run the scripts in numerical order
 ## After all scripts beginning with 0 are done, trigger the manual installation, then resume with the remaining automated ones
 manual_step_done=false
-for script in $autoscripts
-do
-	if [ $manual_step_done == false ] && [[ $script != 0* ]]
-	then
-		manual
-		manual_step_done=true
-	fi
-	echo $script
-	sleep 3
-	echo "Executing $script..."
-    call_and_log $path_auto/$script
-    if [[ $? != 0 ]]
-    then
-        echo "ERROR! $script finished with exit code $?!"
-    fi
-    sleep 1
+for script in $autoscripts; do
+  if [ $manual_step_done == false ] && [[ $script != 0* ]]; then
+    display_manual_step_selection
+    manual_step_done=true
+  fi
+  echo $script
+  sleep 3
+  echo "Executing $script..."
+  call_and_log $path_auto/$script
+  if [[ $? != 0 ]]; then
+    echo "ERROR! $script finished with exit code $?!"
+  fi
+  sleep 1
 done
